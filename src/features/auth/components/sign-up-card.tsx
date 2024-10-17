@@ -25,24 +25,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-const formSchema = z.object({
-  name: z.string().trim().min(1, "Required").max(256),
-  email: z.string().email(),
-  password: z.string().min(8, "Minimum of 8 characters required").max(256),
-});
+import { registerSchema } from "../schemas";
+import { useRegister } from "../api/use-register";
 
 const SignUpCard = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate } = useRegister();
+
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       email: "",
       password: "",
     },
-  })
+  });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = (values: z.infer<typeof registerSchema>) => {
+    mutate({ json: values });
   };
 
   return (
@@ -66,7 +65,7 @@ const SignUpCard = () => {
       <CardContent className="p-7">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
+            <FormField
               name="name"
               control={form.control}
               render={({ field }) => (
@@ -153,7 +152,7 @@ const SignUpCard = () => {
         <p>
           Already have an account?
           <Link href="/sign-in">
-          <span className="text-blue-700">&nbsp;Sign In</span>
+            <span className="text-blue-700">&nbsp;Sign In</span>
           </Link>
         </p>
       </CardContent>
