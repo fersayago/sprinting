@@ -3,7 +3,9 @@ import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
 
-type ResponseType = InferResponseType<(typeof client.api.auth.register)["$post"]>;
+type ResponseType = InferResponseType<
+  (typeof client.api.auth.register)["$post"]
+>;
 type RequestType = InferRequestType<(typeof client.api.auth.register)["$post"]>;
 
 export const useRegister = () => {
